@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assistente de Vendas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #ff7f00, #ffe3c3);
+      color: #4a1a00;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fffaf5;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 15px 40px rgba(255, 119, 0, 0.2);
+      max-width: 700px;
+      width: 100%;
+      animation: fadeIn 0.6s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: #c0392b;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #bf360c;
+    }
+
+    select, textarea {
+      width: 100%;
+      padding: 14px;
+      margin-top: 8px;
+      border: 2px solid #ffe0b2;
+      border-radius: 10px;
+      font-size: 1rem;
+      background-color: #fff6eb;
+      transition: border 0.3s;
+    }
+
+    select:focus, textarea:focus {
+      border-color: #ff7043;
+      outline: none;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(to right, #ff7043, #e65100);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(255, 87, 34, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(230, 81, 0, 0.6);
+    }
+
+    #resposta {
+      margin-top: 2rem;
+      background: #fff3e0;
+      border-left: 5px solid #ff7043;
+      padding: 20px;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: #4e342e;
+      white-space: pre-line;
+      box-shadow: inset 0 0 8px rgba(255, 87, 34, 0.05);
+      animation: fadeIn 0.4s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Assistente Virtual de Vendas</h1>
+
+    <label for="tipo">Tipo de ajuda:</label>
+    <select id="tipo">
+      <option value="curriculo">Melhorar Apresentação Profissional</option>
+      <option value="entrevista">Simular Abordagem de Vendas</option>
+    </select>
+
+    <label for="textoUsuario">Descreva seu perfil como vendedor ou situação:</label>
+    <textarea id="textoUsuario" rows="6" placeholder="Ex: Tenho 25 anos, trabalho com vendas de carros há 3 anos..."></textarea>
+
+    <button onclick="enviar()">Enviar</button>
+
+    <div id="resposta"></div>
+  </div>
+
+  <script>
+    async function enviar() {
+      const tipo = document.getElementById("tipo").value;
+      const textoUsuario = document.getElementById("textoUsuario").value;
+      const respostaDiv = document.getElementById("resposta");
+
+      respostaDiv.innerHTML = "⌛ Consultando Gemini...";
+
+      try {
+        const res = await fetch("/analise-curriculo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ textoUsuario, tipo }),
+        });
+
+        const data = await res.json();
+        respostaDiv.innerHTML = data.resposta || "⚠️ Erro ao obter resposta.";
+      } catch (err) {
+        respostaDiv.innerHTML = "❌ Erro de conexão com o servidor.";
+      }
+    }
+  </script>
+</body>
+</html>
