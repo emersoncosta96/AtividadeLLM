@@ -84,9 +84,9 @@ Simular entrevistas realistas por área de atuação
 Gerar respostas coerentes e profissionais
 
 👨‍💻 Desenvolvido por
-Luiza e Equipe ADS 2025
+Emerson Costa
 Disciplina: Análise e Projeto de Sistemas
-Professor: [Nome do Professor]
+Professor: Geraldo Gomes
 
 ⚠️ Aviso
 Este é um projeto com fins educacionais. O uso da API da OpenAI pode estar sujeito a limitações gratuitas ou cobrança, conforme plano do usuário.
